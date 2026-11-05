@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080d18">
+  <meta name="description" content="Game Center — Twoja prywatna biblioteka gier mobilnych.">
+  <title>Game Center — Twoje gry</title>
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./assets/app.css">
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Game Center — strona główna">
+      <span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 10h14a6 6 0 0 1 5.8 7.5l-1.2 4.2a3.5 3.5 0 0 1-5.8 1.6L18.5 20h-5l-3.3 3.3a3.5 3.5 0 0 1-5.8-1.6l-1.2-4.2A6 6 0 0 1 9 10Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 13v6m-3-3h6m8-1h.1m3 3h.1" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+      <span class="brand-copy"><strong>GAME<span>CENTER</span></strong><small>YOUR PLAY SPACE</small></span>
+    </a>
+    <div class="top-actions"><span class="status-dot"></span><span class="status-label">TWOJA BIBLIOTEKA</span><button id="installBtn" class="icon-button install-button" hidden title="Zainstaluj aplikację">↓ <span>Instaluj</span></button></div>
+  </header>
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="eyebrow"><span></span> CENTRUM GIER MOBILNYCH</div>
+        <h1>Wszystkie gry.<br><em>Jedno miejsce.</em></h1>
+        <p>Twoja prywatna biblioteka. Wybierz tytuł i przejdź prosto do Google Play.</p>
+        <a class="hero-cta" href="#library">Otwórz bibliotekę <span>↘</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="hero-console"><div class="console-glow"></div><svg viewBox="0 0 240 170"><path d="M53 47h134c19 0 31 13 35 32l12 53c4 18-16 31-31 20l-36-27H73l-36 27c-15 11-35-2-31-20l12-53c4-19 16-32 35-32Z" fill="#182641" stroke="#7e9cff" stroke-width="3"/><path d="M72 73v42m-21-21h42" stroke="#dce6ff" stroke-width="8" stroke-linecap="round"/><circle cx="164" cy="83" r="8" fill="#a78bfa"/><circle cx="187" cy="105" r="8" fill="#49e3c1"/><circle cx="164" cy="127" r="8" fill="#f5a3cf"/></svg></div>
+        <div class="float-chip chip-top">✦ <span>PLAY YOUR WAY</span></div><div class="float-chip chip-bottom">GAME ON <b>●</b></div>
+      </div>
+    </section>
+    <section class="library-section" id="library">
+      <div class="section-heading"><div><div class="eyebrow">KOLEKCJA</div><h2>Twoja biblioteka<span class="count" id="gameCount">01</span></h2></div><button class="add-button" id="openAdd"><span>＋</span> Dodaj grę</button></div>
+      <div class="toolbar"><label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Szukaj gry..." autocomplete="off"></label><div class="filters" id="filters"><button class="filter active" data-filter="all">Wszystkie</button><button class="filter" data-filter="strategy">Strategiczne</button><button class="filter" data-filter="other">Pozostałe</button></div></div>
+      <div class="game-grid" id="gameGrid" aria-live="polite"></div>
+      <div class="empty-state" id="emptyState" hidden><div class="empty-icon">⌕</div><h3>Nie znaleziono gier</h3><p>Zmień wyszukiwanie albo dodaj nowy tytuł do biblioteki.</p></div>
+    </section>
+    <section class="note-panel"><div class="note-icon">↗</div><div><strong>Uruchamianie przez Google Play</strong><p>Każdy kafelek otwiera stronę gry w Google Play. Jeśli gra jest już zainstalowana, możesz uruchomić ją ze sklepu lub z ekranu telefonu.</p></div></section>
+    <footer><a class="footer-brand" href="./">GAMECENTER</a><span>Twoja kolekcja. Twoje zasady.</span><span class="footer-version">WERSJA 1.0</span></footer>
+  </main>
+  <dialog id="addDialog" class="add-dialog"><form id="addForm">
+    <div class="dialog-head"><div><div class="eyebrow">ROZBUDUJ KOLEKCJĘ</div><h2>Dodaj nową grę</h2></div><button type="button" class="close-button" id="closeAdd" aria-label="Zamknij">×</button></div>
+    <label class="field-label" for="gameName">Nazwa gry</label><input class="field" id="gameName" maxlength="60" required placeholder="np. Clash of Clans">
+    <label class="field-label" for="gameUrl">Link do Google Play</label><input class="field" id="gameUrl" type="url" required placeholder="https://play.google.com/store/apps/details?id=...">
+    <label class="field-label" for="gameCategory">Kategoria</label><select class="field" id="gameCategory"><option value="strategy">Strategiczne</option><option value="other">Pozostałe</option></select>
+    <p class="form-hint">Wklej pełny adres aplikacji z Google Play. Linki spoza domeny play.google.com nie będą akceptowane.</p>
+    <div class="dialog-actions"><button type="button" class="cancel-button" id="cancelAdd">Anuluj</button><button class="submit-button" type="submit">Dodaj do biblioteki <span>→</span></button></div>
+  </form></dialog>
+  <script src="./assets/app.js" defer></script>
+</body>
+</html>
