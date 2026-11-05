@@ -1,0 +1,14 @@
+{
+  "name": "Game Center — Twoja biblioteka gier",
+  "short_name": "Game Center",
+  "description": "Prywatna biblioteka gier mobilnych.",
+  "lang": "pl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080d18",
+  "theme_color": "#080d18",
+  "icons": [
+    { "src": "./assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
