@@ -26,6 +26,16 @@ Jeśli GitHub Pages nie jest jeszcze aktywne, trzeba włączyć je w ustawieniac
 
 W aplikacji wybierz **Dodaj grę**, podaj nazwę, pełny bezpieczny adres z `https://play.google.com/store/...` i kategorię. Linki spoza Google Play są odrzucane.
 
+## AI Bot — etap 1
+
+Panel poleceń znajduje się pod adresem:
+
+`https://marwlo-ops.github.io/Empire/game-center/bot.html`
+
+Usługa chmurowa jest w katalogu `bot-service/`. Instrukcja wdrożenia i konfiguracji: [bot-service/README.md](../bot-service/README.md). Blueprint Render znajduje się w `render.yaml`. Usługa web jest ustawiona na plan bezpłatny; baza PostgreSQL wymaga osobnego adresu `DATABASE_URL` (np. z Neon lub Supabase) i może podlegać limitom dostawcy.
+
+Pierwszy etap zapisuje polecenia i pokazuje historię. Nie łączy się jeszcze z kontem Goodgame Empire, nie odczytuje rzeczywistych ataków/wydarzeń i nie wykonuje zbierania surowców ani wysyłania wojsk.
+
 ## Ważne ograniczenia
 
 - Strona otwiera stronę aplikacji w Google Play; nie uruchamia plików APK ani gry wewnątrz przeglądarki.
