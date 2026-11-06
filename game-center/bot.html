@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#080d18">
+  <title>AI Bot — Game Center</title>
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./"><span class="brand-mark">◈</span><span class="brand-copy"><strong>GAME<span>CENTER</span></strong><small>AI COMMAND CENTER</small></span></a>
+    <a class="bot-back" href="./">← Biblioteka gier</a>
+  </header>
+  <main class="shell bot-shell">
+    <section class="bot-hero">
+      <div class="eyebrow"><span></span> GOODGAME EMPIRE · CLOUD AGENT</div>
+      <h1>Twój dowódca.<br><em>Jedna komenda.</em></h1>
+      <p>Wydawaj polecenia, sprawdzaj ich status i przeglądaj dziennik działań. Połączenie z grą wymaga osobnego, autoryzowanego adaptera.</p>
+      <div class="bot-status"><i></i><span id="connectionStatus">Serwer nie skonfigurowany</span></div>
+    </section>
+
+    <section class="bot-grid">
+      <article class="bot-panel command-panel">
+        <div class="bot-panel-head"><div><div class="eyebrow">KONSOLA</div><h2>Wydaj polecenie</h2></div><span class="bot-mark">AI</span></div>
+        <div class="quick-commands">
+          <button data-command="Sprawdź status połączenia z grą i przygotuj raport.">Status gry</button>
+          <button data-command="Przygotuj raport o wykrytych atakach.">Ataki</button>
+          <button data-command="Przygotuj raport o aktywnych wydarzeniach.">Wydarzenia</button>
+          <button data-command="Sprawdź możliwości zbierania surowców.">Surowce</button>
+        </div>
+        <label class="bot-label" for="botCommand">Twoja wiadomość</label>
+        <textarea id="botCommand" rows="4" maxlength="1000" placeholder="Np. sprawdź, czy ktoś atakuje moje zamki..."></textarea>
+        <div class="command-foot"><small>Polecenia są analizowane; czynności w grze pozostają zablokowane do czasu integracji.</small><button id="sendCommand" class="submit-button">Wyślij polecenie →</button></div>
+        <div id="botReply" class="bot-reply" aria-live="polite">Czekam na polecenie. Skonfiguruj serwer, aby zapisywać zadania w chmurze.</div>
+      </article>
+      <aside class="bot-panel config-panel">
+        <div class="eyebrow">USTAWIENIA CHMURY</div><h2>Połączenie</h2>
+        <label class="bot-label" for="apiUrl">Adres serwera API</label><input id="apiUrl" class="field" type="url" placeholder="https://twoj-serwer.onrender.com">
+        <label class="bot-label" for="apiToken">Klucz dostępu</label><input id="apiToken" class="field" type="password" autocomplete="off" placeholder="BOT_API_TOKEN">
+        <button id="saveBotConfig" class="cancel-button">Zapisz w tej sesji</button>
+        <p class="config-note">Adres i klucz są przechowywane tylko w pamięci sesji przeglądarki. Nie wpisuj hasła do konta gry.</p>
+        <div class="connector-status"><span>Adapter gry</span><b>Niepodłączony</b></div>
+        <div class="connector-status"><span>Tryb</span><b>Raporty / kolejka</b></div>
+      </aside>
+    </section>
+
+    <section class="bot-panel queue-panel">
+      <div class="bot-panel-head"><div><div class="eyebrow">HISTORIA</div><h2>Ostatnie polecenia</h2></div><button id="refreshCommands" class="cancel-button">Odśwież ↻</button></div>
+      <div id="commandList" class="command-list"><p class="config-note">Brak danych. Połącz serwer, aby pobrać historię zadań.</p></div>
+    </section>
+    <section class="bot-warning"><b>Bezpieczeństwo i uczciwa gra</b><p>Nie udostępniaj loginu, hasła ani kodów sesji. Pierwszy etap nie loguje się do gry i nie wykonuje akcji na koncie. Automatyczne zbieranie, atakowanie lub wysyłanie wojsk wymaga potwierdzenia, że istnieje oficjalny, dozwolony interfejs integracji.</p></section>
+    <footer><a class="footer-brand" href="./">GAMECENTER</a><span>AI Bot · etap 1</span><span class="footer-version">CLOUD CONSOLE</span></footer>
+  </main>
+  <script src="./assets/bot.js" defer></script>
+</body></html>
