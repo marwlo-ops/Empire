@@ -1,0 +1,27 @@
+name: Game Center Bot — checks
+
+on:
+  push:
+    paths:
+      - "bot-service/**"
+      - "render.yaml"
+      - ".github/workflows/bot-service.yml"
+  pull_request:
+    paths:
+      - "bot-service/**"
+      - "render.yaml"
+      - ".github/workflows/bot-service.yml"
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bot-service
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm run check
