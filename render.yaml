@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: game-center-bot
+    runtime: node
+    rootDir: bot-service
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    plan: starter
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: BOT_API_TOKEN
+        generateValue: true
+      - key: ALLOWED_ORIGIN
+        value: https://marwlo-ops.github.io
+      - key: DATABASE_URL
+        fromDatabase:
+          name: game-center-bot-db
+          property: connectionString
+      - key: PGSSL
+        value: "true"
+
+databases:
+  - name: game-center-bot-db
+    plan: basic-256mb
+    databaseName: game_center_bot
+    user: game_center_bot
