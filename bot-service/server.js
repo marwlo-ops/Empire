@@ -42,6 +42,20 @@ function auth(req, res, next) {
 async function initDb() {
   if (!pool) throw new Error('DATABASE_URL is required for persistent cloud storage.');
   await pool.query(`
+    CREATE TABLE IF NOT EXISTS map_npcs (
+      id BIGSERIAL PRIMARY KEY,
+      region VARCHAR(24) NOT NULL CHECK (region IN ('glacier','sands','fire_peaks')),
+      x INTEGER NOT NULL CHECK (x BETWEEN 0 AND 100000),
+      y INTEGER NOT NULL CHECK (y BETWEEN 0 AND 100000),
+      npc_type VARCHAR(80) NOT NULL,
+      name VARCHAR(120) NOT NULL DEFAULT '',
+      level INTEGER,
+      source VARCHAR(80) NOT NULL,
+      observed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      UNIQUE(region,x,y,npc_type)
+    )
+  `);
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS bot_commands (
       id UUID PRIMARY KEY,
       text VARCHAR(1000) NOT NULL,
@@ -92,6 +106,28 @@ app.post('/api/commands', auth, async (req, res) => {
     console.error('command insert failed', error.message);
     res.status(503).json({ error:'Nie udało się zapisać polecenia. Sprawdź bazę danych.' });
   }
+});
+
+const MAP_REGIONS = new Set(['glacier','sands','fire_peaks']);
+
+app.get('/api/map/npcs', auth, async (req, res) => {
+  const region = String(req.query.region || '');
+  if (!MAP_REGIONS.has(region)) return res.status(400).json({ error:'Nieprawidłowa kraina.' });
+  try {
+    const { rows } = await pool.query('SELECT id,region,x,y,npc_type,name,level,source,observed_at FROM map_npcs WHERE region=$1 ORDER BY y,x LIMIT 5000', [region]);
+    res.json({ region, count:rows.length, npcs:rows.map(row => ({...row, observedAt:row.observed_at})) });
+  } catch (error) { console.error('map NPC read failed', error.message); res.status(503).json({ error:'Nie udało się pobrać danych mapy.' }); }
+});
+
+// Import accepts data only from a verified, permitted adapter; no game login or scraping is performed here.
+app.post('/api/map/npcs/import', auth, async (req, res) => {
+  const region=String(req.body?.region||''); const source=typeof req.body?.source==='string'?req.body.source.trim().slice(0,80):''; const records=req.body?.npcs;
+  if (!MAP_REGIONS.has(region)) return res.status(400).json({error:'Nieprawidłowa kraina.'});
+  if (!source || !Array.isArray(records) || records.length>1000) return res.status(400).json({error:'Wymagane source i tablica npcs (maks. 1000 rekordów).'});
+  for (const n of records) if (!Number.isInteger(n.x)||!Number.isInteger(n.y)||n.x<0||n.y<0||n.x>100000||n.y>100000||typeof n.npcType!=='string'||!n.npcType.trim()||n.npcType.length>80) return res.status(400).json({error:'Nieprawidłowy rekord NPC.'});
+  const client=await pool.connect();
+  try { await client.query('BEGIN'); for (const n of records) await client.query('INSERT INTO map_npcs(region,x,y,npc_type,name,level,source,observed_at) VALUES($1,$2,$3,$4,$5,$6,$7,NOW()) ON CONFLICT(region,x,y,npc_type) DO UPDATE SET name=EXCLUDED.name,level=EXCLUDED.level,source=EXCLUDED.source,observed_at=NOW()', [region,n.x,n.y,n.npcType.trim(),String(n.name||'').slice(0,120),Number.isInteger(n.level)?n.level:null,source]); await client.query('COMMIT'); res.json({ok:true,region,imported:records.length,source}); }
+  catch(error) { await client.query('ROLLBACK'); console.error('map NPC import failed',error.message); res.status(503).json({error:'Import danych mapy nie powiódł się.'}); } finally { client.release(); }
 });
 
 app.get('/api/commands', auth, async (_req, res) => {
