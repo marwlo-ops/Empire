@@ -1,5 +1,5 @@
-const CACHE = 'game-center-v2';
-const CORE = ['./','./index.html','./assets/app.css','./assets/app.js','./bot.html','./assets/bot.js','./manifest.webmanifest','./assets/icon.svg'];
+const CACHE = 'game-center-v3';
+const CORE = ['./','./index.html','./assets/app.css','./assets/app.js','./bot.html','./map.html','./assets/bot.js','./assets/map.js','./manifest.webmanifest','./assets/icon.svg'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
 });
