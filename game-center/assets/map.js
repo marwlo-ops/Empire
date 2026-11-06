@@ -1,8 +1,13 @@
 (() => {
 'use strict';
 const $=id=>document.getElementById(id);
-const base=(sessionStorage.getItem('gc-bot-url')||'https://game-center-bot.onrender.com').replace(/\\/+$/,'');
-const token=sessionStorage.getItem('gc-bot-token')||'';
+let base=(sessionStorage.getItem('gc-bot-url')||'').replace(/\\/+$/,'');
+let token=sessionStorage.getItem('gc-bot-token')||'';
+const urlInput=$('mapApiUrl'), tokenInput=$('mapApiToken');
+if(urlInput) urlInput.value=base;
+if(tokenInput) tokenInput.value=token;
+const save=$('saveMapConfig');
+if(save) save.addEventListener('click',()=>{base=urlInput.value.trim().replace(/\\/+$/,'');token=tokenInput.value.trim();sessionStorage.setItem('gc-bot-url',base);sessionStorage.setItem('gc-bot-token',token);status('Konfiguracja zapisana w tej karcie. Pobieram dane…');load();});
 const labels={glacier:'Lodowe Rubieże',sands:'Płonące Piaski',fire_peaks:'Ogniste Szczyty'};
 function status(s){$('status').textContent=s;}
 function cell(value){const td=document.createElement('td');td.textContent=value??'—';return td;}
